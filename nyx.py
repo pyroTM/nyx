@@ -4,6 +4,7 @@ import requests
 import time
 import random
 import colorama
+import pyfiglet
 
 intents = discord.Intents().all()
 
@@ -57,6 +58,63 @@ async def crystalball(ctx, *, question):
     getid.set_thumbnail(url=f"https://www.macmillandictionary.com/external/slideshow/full/emoji_crystal_ball_full.jpg")
     getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
     await ctx.send(embed=getid)
+
+
+@nyx.command()
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, member: discord.Member, *, reason=None):
+    await member.ban(reason=reason)
+
+    embed = discord.Embed(title=f"Member Ban")
+    embed.add_field(name="Member Banned", value=f"{member.tag}")
+    embed.add_field(name="Reason", value=f"{reason}")
+    embed.set_thumbnail(url=f"https://media4.giphy.com/media/fe4dDMD2cAU5RfEaCU/giphy.gif?cid"
+                            f"=ecf05e47gpl02iozuxpbvq7njw7rloocsq0zbxip42z4kaj3&rid=giphy.gif&ct=g")
+    embed.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=embed)
+
+
+@nyx.command()
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+
+    embed = discord.Embed(title=f"Member Kick")
+    embed.add_field(name="Member Kicked", value=f"{member.tag}")
+    embed.add_field(name="Reason", value=f"{reason}")
+    embed.set_thumbnail(url=f"https://media4.giphy.com/media/fe4dDMD2cAU5RfEaCU/giphy.gif?cid"
+                            f"=ecf05e47gpl02iozuxpbvq7njw7rloocsq0zbxip42z4kaj3&rid=giphy.gif&ct=g")
+    embed.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=embed)
+
+
+@nyx.command()
+@commands.has_permissions(ADMINISTRATOR=True)
+async def unban(ctx, *, member):
+    banned_users = await ctx.guild.bans()
+    member_name, member_discriminator = member.split("#")
+
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await ctx.guild.unban(user)
+            await ctx.send(f'Unbanned {user.mention}')
+            return
+
+    embed = discord.Embed(title=f"Member Unban")
+    embed.add_field(name="Member Unbanned", value=f"{member.tag}")
+    embed.set_thumbnail(
+        url=f"https://media4.giphy.com/media/fe4dDMD2cAU5RfEaCU/giphy.gif?cid"
+            f"=ecf05e47gpl02iozuxpbvq7njw7rloocsq0zbxip42z4kaj3&rid=giphy.gif&ct=g")
+    embed.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=embed)
+
+
+@nyx.command()
+async def ascii(ctx, *, text):
+    ascii_output = pyfiglet.figlet_format(f"{text}")
+    await ctx.send(ascii_output)
 
 
 nyx.run("")
