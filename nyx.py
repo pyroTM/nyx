@@ -46,4 +46,17 @@ async def getuuid(ctx, username):
     await ctx.send(embed=getid)
 
 
+@nyx.command()
+async def crystalball(ctx, *, question):
+    url = f"https://8ball.delegator.com/magic/JSON/{question}"
+    data = getInfo(url)
+    response = data["magic"]["answer"]
+    getid = discord.Embed(title=f"Crystal Ball")
+    getid.add_field(name="Your question was:", value=f"{question}", inline=False)
+    getid.add_field(name=f"The all-knowing Crystall Ball says:", value=f"{response}", inline=False)
+    getid.set_thumbnail(url=f"https://www.macmillandictionary.com/external/slideshow/full/emoji_crystal_ball_full.jpg")
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
 nyx.run("")
