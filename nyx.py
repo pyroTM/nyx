@@ -4,6 +4,7 @@ from discord.ext import commands
 import requests
 import time
 import random
+import pyshorteners
 import colorama
 import pyfiglet
 
@@ -189,20 +190,6 @@ async def cardano(ctx):
     await ctx.send(embed=embed)
 
 
-@nyx.command()
-async def tether(ctx):
-    getPrice = cg.get_price(ids='tether', vs_currencies='usd')
-    price = getPrice["tether"]["usd"]
-
-    embed = discord.Embed(title=f"Tether Information")
-    embed.add_field(name="Symbol", value=f"USDT")
-    embed.add_field(name="Price", value=f"{price}")
-    embed.set_thumbnail(url="https://media1.giphy.com/media/0HDN9SyA2LVb8gUfR2/giphy.gif?cid"
-                            "=ecf05e47o54rcti9fnbx1uoykn71bl2lfh7m81a5x5hz60i8&rid=giphy.gif&ct=g")
-    embed.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
-    await ctx.send(embed=embed)
-
-
 @nyx.command(aliases=['purge', 'delete'])
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount: int = -1):
@@ -232,4 +219,120 @@ async def serverinfo(ctx):
     await ctx.send(embed=embed)
 
 
-nyx.run("")
+@nyx.command()
+async def kanye(ctx):
+    url = "https://api.kanye.rest/"
+    data = getInfo(url)
+    quote = data["quote"]
+
+    getid = discord.Embed(title="Kanye West says...")
+    getid.add_field(name=f"Quote", value=f"{quote}")
+    getid.set_thumbnail(url=f"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10"
+                            f"/Kanye_West_at_the_2009_Tribeca_Film_Festival_%28cropped%29.jpg/1200px"
+                            f"-Kanye_West_at_the_2009_Tribeca_Film_Festival_%28cropped%29.jpg")
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def qrcode(ctx, urle):
+    code = f"http://api.qrserver.com/v1/create-qr-code/?data={urle}&size=100x100"
+    getid = discord.Embed(title=f"QRCode Generated for {urle}")
+    getid.set_image(url=code)
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def age(ctx, name):
+    url = f"https://api.agify.io?name={name}"
+    data = getInfo(url)
+    age = data["age"]
+    getid = discord.Embed(title=f"Predicted Age of: {name}")
+    getid.add_field(name=f"Age", value=f"{age}")
+    getid.set_thumbnail(url=f"https://melmagazine.com/wp-content/uploads/2021/01/66f-1.jpg")
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def gender(ctx, name):
+    url = f"https://api.genderize.io?name={name}"
+    data = getInfo(url)
+    gender = data["gender"]
+    probability = data["probability"]
+    percent = probability * 100
+    getid = discord.Embed(title=f"Predicted Gender of: {name}")
+    getid.add_field(name=f"Gender", value=f"{gender}")
+    getid.add_field(name=f"Probability", value=f"{percent}")
+    if gender == "male":
+        getid.set_thumbnail(url=f"https://melmagazine.com/wp-content/uploads/2021/01/66f-1.jpg")
+
+    elif gender == "female":
+
+        getid.set_thumbnail(
+            url="https://t3.ftcdn.net/jpg/02/45/34/90/360_F_245349044_TMxmWxPpnSzeuauvvQnuFe03ueXgS57m.jpg")
+
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def screenshot(ctx, urle):
+    code = f"https://api.apiflash.com/v1/urltoimage?access_key=&url={urle}"
+    if "https" or "http" in urle:
+        getid = discord.Embed(title=f"Screenshot Taken for {urle}")
+        getid.set_image(url=code)
+        getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+        await ctx.send(embed=getid)
+    else:
+        new = "https://" + urle
+        newcode = f"https://api.apiflash.com/v1/urltoimage?access_key=&url={new}"
+        getid = discord.Embed(title=f"Screenshot Taken for {urle}")
+        getid.set_image(url=newcode)
+        getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+        await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def joke(ctx):
+    url = f"https://karljoke.herokuapp.com/jokes/random"
+    data = getInfo(url)
+    setup = data["setup"]
+    punchline = data["punchline"]
+    getid = discord.Embed(title=f"Dad Joke")
+    getid.add_field(name=f"Joke", value=f"{setup}")
+    getid.add_field(name=f"Punchline", value=f"{punchline}")
+    getid.set_thumbnail(
+        url=f"https://yt3.ggpht.com/ytc/AKedOLRtJMw3bOqLjOW62ES2PNKpwK42j3bAQ2-TDqFSxg=s900-c-k-c0x00ffffff-no-rj")
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def meme(ctx):
+    url = f"https://meme-api.herokuapp.com/gimme"
+    data = getInfo(url)
+
+    memecap = data["title"]
+    memeimg = data["preview"][2]
+    getid = discord.Embed(title=memecap)
+    getid.set_image(url=memeimg)
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+@nyx.command()
+async def shorten(ctx, urles):
+    s = pyshorteners.Shortener()
+    shortenator = s.tinyurl.short(f"{urles}")
+    getid = discord.Embed(title=f"Shortened URL: {urles}")
+    getid.add_field(name=f"Original", value=f"{urles}")
+    getid.add_field(name=f"Shortened", value=f"{shortenator}")
+    getid.set_thumbnail(
+        url=f"https://blog.hubspot.com/hs-fs/hubfs/Parts%20of%20a%20URL.png?width=650&name=Parts%20of%20a%20URL.png")
+    getid.set_footer(text="Nyx", icon_url="https://i.ibb.co/Jz2wrk3/4866cf9f0e65da8b94f7eb687df08070.jpg")
+    await ctx.send(embed=getid)
+
+
+nyx.run("ODk0ODk5MTM5ODc4NDgxOTYw.YVwtxQ.BrVUJPhzwEwu6BMWlYi2lNY485U")
