@@ -2,9 +2,12 @@ import discord
 from discord import message
 from pycoingecko import CoinGeckoAPI
 from discord.ext import commands
+import aiohttp
+import asyncio
 import requests
 from faker import Faker
 import pyshorteners
+import random
 import pyfiglet
 import datetime
 import time
@@ -401,6 +404,57 @@ async def show_bot_stats(ctx):
         embed.add_field(name=name, value=value, inline=inline)
 
     await ctx.send(embed=embed)
+
+
+@nyx.command(aliases=['src'])
+async def github(ctx):
+    skin = discord.Embed(title=f"Nyx SRC",
+                         description=f"Nyx is open-sourced! View the code below",
+                         colour=0x2f3136)
+    skin.add_field(value=f"[Github](https://github.com/pyroTM/nyx)", name="᲼᲼᲼᲼᲼᲼")
+    skin.set_footer(text="Nyx")
+    await ctx.send(embed=skin)
+
+
+@nyx.command()
+async def rps(ctx, choice: str):
+    author = ctx.message.author
+    rpsbot = {"rock": ":moyai:",
+              "paper": ":page_facing_up:",
+              "scissors": ":scissors:"}
+    choice = choice.lower()
+    if choice in rpsbot.keys():
+        botchoice = random.choice(list(rpsbot.keys()))
+        msgs = {
+            "win": " You win {}!".format(author.mention),
+            "square": " We're Tied {}!".format(author.mention),
+            "lose": " You lose {}!".format(author.mention)
+        }
+        if choice == botchoice:
+            await ctx.reply(rpsbot[botchoice] + msgs["square"])
+        elif choice == "rock" and botchoice == "paper":
+            await ctx.reply(rpsbot[botchoice] + msgs["lose"])
+        elif choice == "rock" and botchoice == "scissors":
+            await ctx.reply(rpsbot[botchoice] + msgs["win"])
+        elif choice == "paper" and botchoice == "rock":
+            await ctx.reply(rpsbot[botchoice] + msgs["win"])
+        elif choice == "paper" and botchoice == "scissors":
+            await ctx.reply(rpsbot[botchoice] + msgs["lose"])
+        elif choice == "scissors" and botchoice == "rock":
+            await ctx.reply(rpsbot[botchoice] + msgs["lose"])
+        elif choice == "scissors" and botchoice == "paper":
+            await ctx.reply(rpsbot[botchoice] + msgs["win"])
+    else:
+        await ctx.reply("Choose rock, paper or scissors.")
+
+
+@nyx.command()
+async def lmgtfy(ctx, *text):
+    if text == ():
+        await ctx.send("lmgtfy [search terms]")
+        return
+    text = "+".join(text)
+    await ctx.send("http://lmgtfy.com/?q=" + text)
 
 
 nyx.run("")
