@@ -1,3 +1,4 @@
+import DiscordUtils.Music
 import discord
 import platform
 import os
@@ -17,6 +18,7 @@ intents = discord.Intents().all()
 
 nyx = commands.Bot(command_prefix=config["bot_prefix"], intents=intents)
 slash = SlashCommand(nyx)
+
 
 
 @nyx.event
@@ -63,8 +65,8 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         nyx.load_extension(f'commands.{filename[:-3]}')
 
-for filename in os.listdir('./antinuke'):
+for filename in os.listdir('./music'):
     if filename.endswith('.py'):
-        nyx.load_extension(f'antinuke.{filename[:-3]}')
+        nyx.load_extension(f'music.{filename[:-3]}')
 
 nyx.run(config["token"])
