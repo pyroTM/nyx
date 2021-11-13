@@ -7,7 +7,7 @@ import requests
 import random
 
 
-class Economy(commands.Cog):
+class Giveaway(commands.Cog):
 
     def __init__(self, nyx):
         self.nyx = nyx
@@ -102,4 +102,4 @@ class Economy(commands.Cog):
 
 
 def setup(nyx):
-    nyx.add_cog(Economy(nyx))
+    nyx.add_cog(Giveaway(nyx))

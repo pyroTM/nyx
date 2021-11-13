@@ -72,4 +72,8 @@ for filename in os.listdir('./giveaway'):
     if filename.endswith('.py'):
         nyx.load_extension(f'giveaway.{filename[:-3]}')
 
+for filename in os.listdir('./economy'):
+    if filename.endswith('.py'):
+        nyx.load_extension(f'economy.{filename[:-3]}')
+
 nyx.run(config["token"])
