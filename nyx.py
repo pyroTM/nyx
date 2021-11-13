@@ -44,18 +44,21 @@ async def on_command_error(ctx, error):
 
 
 @nyx.command()
+@commands.is_owner()
 async def enable(ctx, extension):
     nyx.load_extension(f'commands.{extension}')
     print(chalk.green.bold(f"[ENABLED] Command {extension}"))
 
 
 @nyx.command()
+@commands.is_owner()
 async def disable(ctx, extension):
     nyx.unload_extension(f'commands.{extension}')
     print(chalk.red.bold(f"[DISABLED] Command {extension}"))
 
 
 @nyx.command()
+@commands.is_owner()
 async def reload(ctx, extension):
     nyx.unload_extension(f'commands.{extension}')
     nyx.load_extension(f'commands.{extension}')
@@ -65,8 +68,8 @@ for filename in os.listdir('./commands'):
     if filename.endswith('.py'):
         nyx.load_extension(f'commands.{filename[:-3]}')
 
-for filename in os.listdir('./music'):
+for filename in os.listdir('./giveaway'):
     if filename.endswith('.py'):
-        nyx.load_extension(f'music.{filename[:-3]}')
+        nyx.load_extension(f'giveaway.{filename[:-3]}')
 
 nyx.run(config["token"])
