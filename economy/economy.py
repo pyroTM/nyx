@@ -39,8 +39,8 @@ class Economy(commands.Cog):
 
         user = ctx.author
         earnings = random.randrange(71)
-        begresp = [f"Someone takes pity on you and grants you 🪙 {earnings}",
-                   f"You beg at the rich kid neighborhood and earn 🪙 {earnings}",
+        begresp = [f"Someone takes pity on your poor ass and grants you 🪙 {earnings}",
+                   f"You give the rich kid a blowjob and earn 🪙 {earnings}",
                    f"You beg Elon Musk and earn 🪙 {earnings}",
                    f"You terrorize some foreign tourists and earn  🪙 {earnings}"]
 
@@ -58,16 +58,16 @@ class Economy(commands.Cog):
         await open_account(ctx.author)
 
         if amount == None:
-            await ctx.send("You cannot withdraw nothing! Please enter an amount to withdraw!")
+            await ctx.send("You dont have that much you dumb fuck, get some money then try again")
             return
         bal = await update_bank(ctx.author)
         amount = int(amount)
 
         if amount > bal[1]:
-            await ctx.send("You don't have that much money!")
+            await ctx.send("You don't have that much money, prick")
             return
         if amount < 0:
-            await ctx.send("Amount must be positive!")
+            await ctx.send("Did you fail school? you cant take away nothing")
             return
 
         await update_bank(ctx.author, amount)
@@ -79,16 +79,16 @@ class Economy(commands.Cog):
         await open_account(ctx.author)
 
         if amount == None:
-            await ctx.send("You cannot deposit nothing! Please enter an amount to withdraw!")
+            await ctx.send("You have nothing to deposit, maybe i will give you some if you get on your knees and beg")
             return
         bal = await update_bank(ctx.author)
         amount = int(amount)
 
         if amount > bal[0]:
-            await ctx.send("You don't have that much money!")
+            await ctx.send("You don't have that much money, prick")
             return
         if amount < 0:
-            await ctx.send("Amount must be positive!")
+            await ctx.send("Did you fail school? you cant add nothing")
             return
 
         await update_bank(ctx.author, -1 * amount)
