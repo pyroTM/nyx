@@ -85,7 +85,7 @@ class Economy(commands.Cog):
         await open_account(ctx.author)
 
         if amount == None:
-            await ctx.send("You have nothing to deposit, maybe i will give you some if you get on your knees and beg")
+            await ctx.send("You have nothing to deposit, maybe I will give you some if you get on your knees and beg")
             return
         bal = await update_bank(ctx.author)
 
@@ -219,6 +219,54 @@ class Economy(commands.Cog):
 
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def shop(self, ctx):
+        em = discord.Embed(title="Shop")
+
+        for item in mainshop:
+            name = item["name"]
+            price = item["price"]
+            desc = item["description"]
+            em.add_field(name=name, value=f"${price} | {desc}")
+
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def buy(self, ctx, amount=1, *, item):
+        await open_account(ctx.author)
+
+        res = await buy_this(ctx.author, item, amount)
+
+        if not res[0]:
+            if res[1] == 1:
+                await ctx.send("That Object isn't there!")
+                return
+            if res[1] == 2:
+                await ctx.send(f"You don't have enough cash to buy {amount} {item}")
+                return
+
+        await ctx.send(f"You just bought {amount} {item}")
+
+    @commands.command(aliases=['inv'])
+    async def Inventory(self, ctx):
+        await open_account(ctx.author)
+        user = ctx.author
+        users = await get_bank_data()
+
+        try:
+            inventory = users[str(user.id)]["inventory"]
+        except:
+            inventory = []
+
+        em = discord.Embed(title="Inventory")
+        for item in inventory:
+            name = item["item"]
+            amount = item["amount"]
+
+            em.add_field(name=name, value=amount)
+
+        await ctx.send(embed=em)
+
 
 async def open_account(user):
     users = await get_bank_data()
@@ -278,23 +326,23 @@ async def buy_this(user, item_name, amount):
     try:
         index = 0
         t = None
-        for thing in users[str(user.id)]["bag"]:
+        for thing in users[str(user.id)]["inventory"]:
             n = thing["item"]
             if n == item_name:
                 old_amt = thing["amount"]
                 new_amt = old_amt + amount
-                users[str(user.id)]["bag"][index]["amount"] = new_amt
+                users[str(user.id)]["inventory"][index]["amount"] = new_amt
                 t = 1
                 break
             index += 1
         if t == None:
             obj = {"item": item_name, "amount": amount}
-            users[str(user.id)]["bag"].append(obj)
+            users[str(user.id)]["inventory"].append(obj)
     except:
         obj = {"item": item_name, "amount": amount}
-        users[str(user.id)]["bag"] = [obj]
+        users[str(user.id)]["inventory"] = [obj]
 
-    with open("mainbank.json", "w") as f:
+    with open("bank.json", "w") as f:
         json.dump(users, f)
 
     await update_bank(user, cost * -1, "cash")
