@@ -6,7 +6,6 @@ from simple_chalk import chalk
 import sys
 import json
 from discord.ext import commands
-from discord_slash import SlashCommand, SlashContext
 
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again!")
@@ -17,8 +16,6 @@ else:
 intents = discord.Intents().all()
 
 nyx = commands.Bot(command_prefix=config["bot_prefix"], intents=intents)
-slash = SlashCommand(nyx)
-
 
 
 @nyx.event

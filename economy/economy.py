@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from simple_chalk import chalk
-import requests
 import json
 import random
 import os
@@ -18,6 +17,11 @@ class Economy(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(chalk.green.bold(f"[ENABLED] Economy"))
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"You can use this command in {round(error.retry_after)} seconds")
 
     @commands.command(aliases=["bal", "cash"])
     async def balance(self, ctx, member: discord.Member = None):
@@ -36,6 +40,7 @@ class Economy(commands.Cog):
         await ctx.send(embed=e)
 
     @commands.command()
+    @commands.cooldown(1, 1800, commands.BucketType.user)
     async def beg(self, ctx):
         await open_account(ctx.author)
         users = await get_bank_data()
@@ -131,6 +136,7 @@ class Economy(commands.Cog):
         await ctx.send(f"You paid {member} 🪙 {amount}!")
 
     @commands.command(aliases=["gamble"])
+    @commands.cooldown(1, 2, commands.BucketType.user)
     async def slots(self, ctx, amount=None):
         await open_account(ctx.author)
 
@@ -164,16 +170,13 @@ class Economy(commands.Cog):
             await ctx.send(f"Better luck next time,  you lost 🪙 {amount}!")
 
     @commands.command(aliases=["steal"])
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def rob(self, ctx, member: discord.Member):
         await open_account(ctx.author)
         await open_account(member)
         bal = await update_bank(member)
 
-        if bal[0] < 100:
-            await ctx.send("Their also broke :skull:")
-            return
-
-        robbings = random.randrange(1, bal[0])
+        robbings = random.randrange(1, bal[0] + bal[1])
 
         robresp = [f"You were caught attempting to rob {member}, and have been fined 🪙 {robbings}",
                    f"You robbed 🪙 {robbings} from {member}"]

@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from simple_chalk import chalk
 import requests
-from discord_slash import SlashCommand
 
 
 class Wink(commands.Cog):
