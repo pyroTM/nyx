@@ -30,7 +30,6 @@ class AnimeQ(commands.Cog):
         e.add_field(name="Quote:", value=quote)
         e.add_field(name="Character:", value=char)
         e.add_field(name="Anime:", value=anime)
-        e.set_footer(text="Command Requested by qtgang :)")
         await ctx.send(embed=e)
 
 

@@ -4,7 +4,7 @@ from simple_chalk import chalk
 import random
 
 
-class Pixelate(commands.Cog):
+class Rps(commands.Cog):
 
     def __init__(self, nyx):
         self.nyx = nyx
@@ -46,4 +46,4 @@ class Pixelate(commands.Cog):
 
 
 def setup(nyx):
-    nyx.add_cog(Pixelate(nyx))
+    nyx.add_cog(Rps(nyx))

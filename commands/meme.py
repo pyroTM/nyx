@@ -4,7 +4,7 @@ from simple_chalk import chalk
 import requests
 
 
-class Pixelate(commands.Cog):
+class meme(commands.Cog):
 
     def __init__(self, nyx):
         self.nyx = nyx
@@ -30,4 +30,4 @@ class Pixelate(commands.Cog):
 
 
 def setup(nyx):
-    nyx.add_cog(Pixelate(nyx))
+    nyx.add_cog(meme(nyx))
