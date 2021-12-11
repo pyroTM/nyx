@@ -22,7 +22,7 @@ class AnimeQ(commands.Cog):
         url = "https://some-random-api.ml/animu/quote"
         info = self.getInfo(url)
         quote = info["sentence"]
-        char = info["characther"]
+        char = info["character"]
         anime = info["anime"]
 
         e = discord.Embed(title="Anime Quote", color=discord.Color.blurple())

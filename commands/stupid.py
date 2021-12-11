@@ -14,7 +14,12 @@ class Stupid(commands.Cog):
 
     @commands.command()
     async def stupid(self, ctx, member: discord.Member = None):
-        url = f"https://some-random-api.ml/canvas/its-so-stupid?avatar={member.avatar_url}&dog=im+stupid"
+        ava = member.avatar_url
+        print(ava)
+        a = str(ava)
+        a = a.replace("webp", "png")
+        print(ava)
+        url = f"https://some-random-api.ml/canvas/its-so-stupid?avatar={a}&dog=im+retarded"
         e = discord.Embed(title="\uFEFF", color=discord.Color.blurple())
         e.set_image(url=url)
         await ctx.send(embed=e)

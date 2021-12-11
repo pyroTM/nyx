@@ -59,17 +59,27 @@ async def reload(ctx, extension):
     nyx.unload_extension(f'commands.{extension}')
     nyx.load_extension(f'commands.{extension}')
 
+def setup():
 
-for filename in os.listdir('./commands'):
-    if filename.endswith('.py'):
-        nyx.load_extension(f'commands.{filename[:-3]}')
+    for filename in os.listdir('./commands'):
+        if filename.endswith('.py'):
+            nyx.load_extension(f'commands.{filename[:-3]}')
 
-for filename in os.listdir('./giveaway'):
-    if filename.endswith('.py'):
-        nyx.load_extension(f'giveaway.{filename[:-3]}')
+    for filename in os.listdir('./moderation'):
+        if filename.endswith('.py'):
+            nyx.load_extension(f'moderation.{filename[:-3]}')
 
-for filename in os.listdir('./economy'):
-    if filename.endswith('.py'):
-        nyx.load_extension(f'economy.{filename[:-3]}')
+    for filename in os.listdir('./giveaway'):
+        if filename.endswith('.py'):
+            nyx.load_extension(f'giveaway.{filename[:-3]}')
+
+    for filename in os.listdir('./economy'):
+        if filename.endswith('.py'):
+            nyx.load_extension(f'economy.{filename[:-3]}')
+
+
+
+
+setup()
 
 nyx.run(config["token"])

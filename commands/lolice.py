@@ -14,7 +14,12 @@ class Lolice(commands.Cog):
 
     @commands.command()
     async def lolice(self, ctx, member: discord.Member = None):
-        url = f"https://some-random-api.ml/canvas/lolice?avatar={member.avatar_url}"
+        ava = member.avatar_url
+        print(ava)
+        a = str(ava)
+        a = a.replace("webp", "png")
+        print(ava)
+        url = f"https://some-random-api.ml/canvas/lolice?avatar={a}"
         e = discord.Embed(title="\uFEFF", color=discord.Color.blurple())
         e.set_image(url=url)
         await ctx.send(embed=e)

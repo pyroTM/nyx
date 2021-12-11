@@ -14,8 +14,12 @@ class Wasted(commands.Cog):
 
     @commands.command()
     async def wasted(self, ctx, member: discord.Member = None):
-        url = f"https://some-random-api.ml/canvas/wasted?avatar={member.avatar_url}"
-        e = discord.Embed(title="\uFEFF", color=discord.Color.blurple())
+        ava = member.avatar_url
+        print(ava)
+        a = str(ava)
+        print(ava)
+        a = a.replace("webp", "png")
+        url = f"https://some-random-api.ml/canvas/wasted?avatar={a}"
         e.set_image(url=url)
         await ctx.send(embed=e)
 
