@@ -60,6 +60,7 @@ class mod(commands.Cog):
                 return
 
     @commands.command()
+    @commands.has_permissions(kick_members=True)
     async def mute(self, ctx, member: discord.Member):
         role_members = discord.utils.get(ctx.guild.roles, name='Members')
         role_muted = discord.utils.get(ctx.guild.roles, name='Muted')
@@ -68,6 +69,7 @@ class mod(commands.Cog):
         await context.send("User was muted")
 
     @commands.command()
+    @commands.has_permissions(kick_members=True)
     async def unmute(self, ctx, member: discord.Member):
         role_members = discord.utils.get(ctx.guild.roles, name='Members')
         role_muted = discord.utils.get(ctx.guild.roles, name='Muted')
