@@ -5,7 +5,7 @@ import json
 import random
 import os
 
-os.chdir("C:\\Users\\trisa\\PycharmProjects\\nyx\\economy")
+os.chdir("")
 mainshop = [{"name": "Discord Color Pass", "price": 100, "description": "Access to the Discord Color Roles!"}]
 
 
